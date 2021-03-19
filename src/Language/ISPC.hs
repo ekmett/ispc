@@ -18,6 +18,7 @@ import System.Exit
 parseDependencies :: String -> Q [FilePath]
 parseDependencies s = do
   liftIO $ putStrLn s -- TODO
+
   return []
 
 compile :: [String] -> String -> Q [Dec]
@@ -31,9 +32,8 @@ compile args source = do
     liftIO (waitForProcess handle) >>= \case
       ExitFailure code -> fail "ispc: compilation failed"
       ExitSuccess -> do
-        depString <- liftIO $ readFile depFile
-        deps <- parseDependencies depString
-        for_ deps addDependentFile
+        deps <- liftIO $ readFile depFile
+        for_ (lines deps) addDependentFile
   addForeignFilePath RawObject objectFile
   pure []
 
