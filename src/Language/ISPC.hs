@@ -15,12 +15,6 @@ import Language.Haskell.TH
 import System.Process
 import System.Exit
 
-parseDependencies :: String -> Q [FilePath]
-parseDependencies s = do
-  liftIO $ putStrLn s -- TODO
-
-  return []
-
 compile :: [String] -> String -> Q [Dec]
 compile args source = do
   sourceFile <- addTempFile "ispc"
